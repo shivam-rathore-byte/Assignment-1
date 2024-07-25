@@ -13,6 +13,8 @@ class AddBookScreen extends StatefulWidget {
 
 class _AddBookScreenState extends State<AddBookScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _descKey = GlobalKey<FormState>();
+  final _idKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   List<Book> _searchResults = [];
 
@@ -37,26 +39,59 @@ class _AddBookScreenState extends State<AddBookScreen> {
         title: Text('Add a Book'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(32.0),
         child: Column(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Form(
               key: _formKey,
               child: TextFormField(
                 controller: _titleController,
-                decoration: InputDecoration(labelText: 'Search for a book'),
+                decoration:
+                    InputDecoration(labelText: 'Enter any keyword to search'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a book title';
+                    return 'Please enter a book keyword';
                   }
                   return null;
                 },
               ),
             ),
-            const Spacer(),
+            Form(
+              key: _descKey,
+              child: TextFormField(
+                decoration: InputDecoration(labelText: 'Enter Description'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Description';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Form(
+              child: TextFormField(
+                decoration: InputDecoration(labelText: 'Enter author name'),
+              ),
+            ),
+            Form(
+              key: _idKey,
+              child: TextFormField(
+                decoration: InputDecoration(labelText: 'Enter book id'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a book id';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            //const Spacer(),
             ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
+                if (_formKey.currentState!.validate() &&
+                    _descKey.currentState!.validate() &&
+                    _idKey.currentState!.validate()) {
                   _searchBooks(_titleController.text);
                 }
               },
